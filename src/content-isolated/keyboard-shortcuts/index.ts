@@ -3,6 +3,7 @@ import type { KeyboardEventLike, ParsedPattern } from '../../utils/shortcut-keys
 import type { SyncOptionsWithFallback } from '../../utils/sync-options';
 import type { ContentFeature } from '../pages';
 import { filter, fromEvent, map, withLatestFrom } from 'rxjs';
+import browser from '../../utils/browser';
 import { matchPatterns, parsePatterns } from '../../utils/shortcut-keys';
 import shortcuts from './shortcuts';
 
@@ -51,7 +52,7 @@ const keyboardShortcuts: ContentFeature = ({ pageContent$, syncOptions$, runtime
 
     event.preventDefault();
 
-    chrome.runtime.sendMessage<RuntimeMessage>({
+    browser.runtime.sendMessage<RuntimeMessage>({
       type: 'SEND_BACK_KEYBOARD_SHORTCUTS',
       sendBackKeyboardShortcutNames: matchedShortcutNames,
     });

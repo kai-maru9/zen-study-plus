@@ -3,6 +3,7 @@ import type { ContentFeature, PageContent, PageType } from './pages';
 import defaults from 'defaults';
 import { concatMap, EMPTY, filter, from, fromEvent, fromEventPattern, map, merge, of, shareReplay, startWith } from 'rxjs';
 import { EVENT_TYPE_PREFIX } from '../constants';
+import browser from '../utils/browser';
 import { fallbackSyncOptions } from '../utils/default-options';
 import { createMessageEventDispatcher, INIT_EVENT_TYPE, LOAD_MAIN_EVENT_TYPE } from '../utils/events';
 import { RuntimeMessage } from '../utils/runtime-messages';
@@ -43,10 +44,10 @@ const syncOptions$ = merge(
   ),
   fromEventPattern<{ [K in keyof SyncStorage]?: chrome.storage.StorageChange }>(
     (handler) => {
-      chrome.storage.sync.onChanged.addListener(handler);
+      browser.storage.sync.onChanged.addListener(handler);
     },
     (handler) => {
-      chrome.storage.sync.onChanged.removeListener(handler);
+      browser.storage.sync.onChanged.removeListener(handler);
     },
   ).pipe(
     concatMap(({ options }) => options ? of(options.newValue) : EMPTY),
@@ -61,10 +62,10 @@ const syncOptions$ = merge(
 
 const runtimeMessage$ = fromEventPattern(
   (handler) => {
-    chrome.runtime.onMessage.addListener(handler);
+    browser.runtime.onMessage.addListener(handler);
   },
   (handler) => {
-    chrome.runtime.onMessage.removeListener(handler);
+    browser.runtime.onMessage.removeListener(handler);
   },
   (message) => message,
 ).pipe(

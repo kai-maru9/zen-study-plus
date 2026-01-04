@@ -2,9 +2,10 @@
   import { Github, MessageCircleQuestionMark, Settings } from '@lucide/svelte';
   import ButtonWithIcon from '../components/ButtonWithIcon.svelte';
   import ExternalLink from '../components/ExternalLink.svelte';
+  import browser from '../utils/browser';
   import './app.scss';
 
-  const version = chrome.runtime.getManifest().version;
+  const version = browser.runtime.getManifest().version;
 </script>
 
 <main class='container-fluid'>
@@ -18,7 +19,7 @@
     <ButtonWithIcon
       class='outline'
       onclick={() => {
-        chrome.runtime.openOptionsPage();
+        browser.runtime.openOptionsPage();
       }}
     >
       <Settings />

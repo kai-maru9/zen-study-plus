@@ -1,9 +1,10 @@
+import browser from '../utils/browser';
 import { defaultSyncOptions } from '../utils/default-options';
 import { RuntimeMessage } from '../utils/runtime-messages';
 import { getSyncStorage, setSyncStorage } from '../utils/storage';
 import { HistoricalSyncOptions, migrateHistoricalSyncOptions } from '../utils/sync-options';
 
-chrome.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(async () => {
   const unknownOptions = (await getSyncStorage('options')).options;
 
   try {
@@ -17,7 +18,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 });
 
-chrome.runtime.onMessage.addListener((unknownMessage, sender) => {
+browser.runtime.onMessage.addListener((unknownMessage, sender) => {
   const message = RuntimeMessage.parse(unknownMessage);
 
   switch (message.type) {
@@ -25,7 +26,7 @@ chrome.runtime.onMessage.addListener((unknownMessage, sender) => {
       const tabId = sender.tab?.id;
 
       if (tabId) {
-        chrome.tabs.sendMessage<RuntimeMessage>(tabId, {
+        browser.tabs.sendMessage<RuntimeMessage>(tabId, {
           type: 'KEYBOARD_SHORTCUTS',
           keyboardShortcutNames: message.sendBackKeyboardShortcutNames,
         });
@@ -42,12 +43,12 @@ chrome.runtime.onMessage.addListener((unknownMessage, sender) => {
         return;
       }
 
-      chrome.webNavigation.getFrame({ tabId, frameId }).then((frame) => {
+      browser.webNavigation.getFrame({ tabId, frameId }).then((frame) => {
         if (!frame || frame.parentFrameId === -1) {
           return;
         }
 
-        chrome.tabs.sendMessage<RuntimeMessage>(
+        browser.tabs.sendMessage<RuntimeMessage>(
           tabId,
           {
             type: 'RESIZE_REFERENCE',
@@ -60,8 +61,8 @@ chrome.runtime.onMessage.addListener((unknownMessage, sender) => {
   }
 });
 
-chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
-  chrome.tabs.sendMessage<RuntimeMessage>(
+browser.webNavigation.onHistoryStateUpdated.addListener((details) => {
+  browser.tabs.sendMessage<RuntimeMessage>(
     details.tabId,
     { type: 'CHANGE_HISTORY_STATE' },
     { frameId: details.frameId },
