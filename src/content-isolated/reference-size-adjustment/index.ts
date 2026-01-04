@@ -1,6 +1,7 @@
 import type { RuntimeMessage } from '../../utils/runtime-messages';
 import type { ContentFeature } from '../pages';
 import { combineLatest, filter, map, startWith, takeUntil, takeWhile } from 'rxjs';
+import browser from '../../utils/browser';
 import { cleanable, Cleanup } from '../../utils/cleanup';
 import { fromResizeObserver } from '../../utils/rxjs-helpers';
 
@@ -30,7 +31,7 @@ const referenceSizeAdjustment: ContentFeature = ({ pageContent$, syncOptions$, r
             takeWhile((height) => height < referenceSizeAdjustmentOptions.maxHeight, true),
             takeUntil(cleanup.executed$),
           ).subscribe((height) => {
-            chrome.runtime.sendMessage<RuntimeMessage>({
+            browser.runtime.sendMessage<RuntimeMessage>({
               type: 'SEND_BACK_RESIZE_REFERENCE',
               sendBackHeight: Math.min(height, referenceSizeAdjustmentOptions.maxHeight),
             });

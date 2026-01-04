@@ -3,11 +3,21 @@
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/bbnjgcjpnialjodpkneedbcflnidahac.svg)](https://chromewebstore.google.com/detail/bbnjgcjpnialjodpkneedbcflnidahac)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-ZEN Study に様々な機能を追加する Chrome 拡張機能
+ZEN Study に様々な機能を追加する Firefox アドオン（Chrome 版も同梱）
 
 ## インストール
 
-以下の2種類の方法から選択する。
+以下の方法から選択する。
+
+### Firefox で一時的に読み込む
+
+署名済みのアドオンとして公開していないため、Firefox では一時的に読み込んで利用する。
+
+1. [最新のリリース](https://github.com/Level222/zen-study-plus/releases/latest)にアクセス
+2. Assets 内の `zen-study-plus-v{バージョン}.zip` をダウンロードし、解凍する
+3. アドレスバーから `about:debugging#/runtime/this-firefox` にアクセス
+4. 「一時的なアドオンを読み込む」から、解凍したフォルダー内の `manifest.json` を選択する
+   - ブラウザーを再起動すると無効化されるため、必要に応じて再読み込みする
 
 ### Chrome ウェブストアからインストール
 

@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import browser from './browser';
 import { SyncOptions } from './sync-options';
 
 export const SyncStorage = z.object({
@@ -15,9 +16,9 @@ type GetSyncStorage
 export const getSyncStorage: GetSyncStorage = <T extends keyof SyncStorage>(
   keys?: T | T[] | Pick<SyncStorage, T> | null,
 ) => (
-  chrome.storage.sync.get<SyncStorage>(keys)
+  browser.storage.sync.get<SyncStorage>(keys)
 );
 
 export const setSyncStorage = (items: Partial<SyncStorage>): Promise<void> => (
-  chrome.storage.sync.set(items)
+  browser.storage.sync.set(items)
 );
